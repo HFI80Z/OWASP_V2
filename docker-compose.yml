@@ -1,0 +1,37 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    container_name: microecom_db
+    environment:
+      POSTGRES_DB: microecom
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 010924Apple
+    ports:
+      - "5433:5432"
+    networks:
+      - microecom-network
+
+  web:
+    build: .
+    container_name: microecom_app
+    depends_on:
+      - db
+    networks:
+      - microecom-network
+    # ...
+    # volumes, etc.
+
+  adminer:
+    image: adminer
+    container_name: microecom_adminer
+    restart: always
+    ports:
+      - "8081:8080"
+    depends_on:
+      - db
+    networks:
+      - microecom-network
+
+networks:
+  microecom-network:
